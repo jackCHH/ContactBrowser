@@ -7,8 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,6 +21,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private EditText etSearch;
+    private ListView contacts;
     private ContactsAdapter contact_adapter;
     final ArrayList<Contact> all_contacts = new ArrayList<Contact>();
 
@@ -28,8 +34,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        contacts = (ListView) findViewById(R.id.contact_list);
+        etSearch = (EditText) findViewById(R.id.search);
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                contact_adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+
         Cursor cur = getContacts(MainActivity.this);
-        ListView contacts = (ListView) findViewById(R.id.contact_list);
+
 
         traverseCursor(cur);
 
