@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,12 +14,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-//ContactsContract.CommonDataKinds.Phone.NUMBER
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private SimpleCursorAdapter adapter;
     private ContactsAdapter contact_adapter;
+    final ArrayList<Contact> all_contacts = new ArrayList<Contact>();
 
 
     @Override
@@ -30,28 +28,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ArrayList<Contact> all_contacts = new ArrayList<Contact>();
         Cursor cur = getContacts(MainActivity.this);
-
-
         ListView contacts = (ListView) findViewById(R.id.contact_list);
 
-
-
-        while (cur.moveToNext()) {
-            String name = cur.getString(cur.getColumnIndex("display_name"));
-            String phone_number = cur.getString(cur.getColumnIndex("data1"));
-
-            Contact current_contact = new Contact(name, phone_number);
-            all_contacts.add(current_contact);
-
-        }
-
-        cur.close();
+        traverseCursor(cur);
 
         contact_adapter = new ContactsAdapter(this, all_contacts);
         contacts.setAdapter(contact_adapter);
-
 
         contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,6 +69,19 @@ public class MainActivity extends AppCompatActivity {
         intent.setData(Uri.parse("tel:"+current_number));
         startActivity(intent);
 
+    }
+
+    private void traverseCursor(Cursor cur){
+        while (cur.moveToNext()) {
+            String name = cur.getString(cur.getColumnIndex("display_name"));
+            String phone_number = cur.getString(cur.getColumnIndex("data1"));
+
+            Contact current_contact = new Contact(name, phone_number);
+            all_contacts.add(current_contact);
+
+        }
+
+        cur.close();
     }
 
 
