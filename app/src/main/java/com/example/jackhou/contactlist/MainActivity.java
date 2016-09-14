@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         int[] bindTo = {R.id.name, R.id.number};
 
 
-        adapter = new SimpleCursorAdapter(this, R.layout.list_item, cur, bindFrom
-                , bindTo, 0);
+        adapter = new SimpleCursorAdapter(this, R.layout.list_item, cur, bindFrom, bindTo, 0);
         contacts.setAdapter(adapter);
 
 
@@ -70,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
 
         String[] projection =
                 new String[]{ContactsContract.Contacts._ID,
-                        ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+                        ContactsContract.Contacts.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER};
 
         String selection = ContactsContract.CommonDataKinds.Phone.TYPE + "=" + ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
         String[] selectionArgs = null;
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME +
-                " COLLATE LOCALIZED ASC";
+        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
         return context.getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
 
 
