@@ -21,5 +21,10 @@ public class Contact {
         return this.number;
     }
 
+    @Override
+    public String toString(){
+        return this.name + "  -  " + this.number;
+    }
+
 
 }
