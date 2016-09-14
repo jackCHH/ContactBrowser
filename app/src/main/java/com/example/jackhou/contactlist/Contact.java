@@ -5,8 +5,8 @@ package com.example.jackhou.contactlist;
  */
 public class Contact {
 
-    String name;
-    String number;
+    private String name;
+    private String number;
 
     public Contact(String name, String number){
         this.name= name;

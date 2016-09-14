@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    private EditText etSearch;
+    private EditText search;
     private ListView contacts;
     private ContactsAdapter contact_adapter;
     final ArrayList<Contact> all_contacts = new ArrayList<Contact>();
@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         contacts = (ListView) findViewById(R.id.contact_list);
-        etSearch = (EditText) findViewById(R.id.search);
-
-
-        etSearch.addTextChangedListener(new TextWatcher() {
+        search = (EditText) findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -55,16 +53,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         Cursor cur = getContacts(MainActivity.this);
-
-
         traverseCursor(cur);
 
         contact_adapter = new ContactsAdapter(this, all_contacts);
         contacts.setAdapter(contact_adapter);
-
         contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

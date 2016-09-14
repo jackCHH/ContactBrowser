@@ -28,20 +28,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     }
 
 
-    @Override
-    public int getCount(){
-        return displayValues.size();
-    }
-
-    @Override
-    public Object getItem(int position){
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position){
-        return position;
-    }
 
     private class ViewHolder{
         LinearLayout llContainer;
@@ -68,8 +54,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(displayValues.get(position).name);
-        holder.number.setText(displayValues.get(position).number);
+        holder.name.setText(displayValues.get(position).getName());
+        holder.number.setText(displayValues.get(position).getNumber());
 
         return convertView;
     }
@@ -88,33 +74,30 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
+                FilterResults results = new FilterResults();
                 ArrayList<Contact> FilteredArrList = new ArrayList<Contact>();
 
                 if (originalValues == null) {
-                    originalValues = new ArrayList<Contact>(displayValues); // saves the original data in mOriginalValues
+                    originalValues = new ArrayList<Contact>(displayValues);
                 }
 
-                /********
-                 *
-                 *  If constraint(CharSequence that is received) is null returns the mOriginalValues(Original) values
-                 *  else does the Filtering and returns FilteredArrList(Filtered)
-                 *
-                 ********/
                 if (constraint == null || constraint.length() == 0) {
 
-                    // set the Original result to return
                     results.count = originalValues.size();
                     results.values = originalValues;
+
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (int i = 0; i < originalValues.size(); i++) {
-                        String data = originalValues.get(i).name;
+                        String data = originalValues.get(i).getName();
                         if (data.toLowerCase().startsWith(constraint.toString())) {
-                            FilteredArrList.add(new Contact(originalValues.get(i).name,originalValues.get(i).number));
+                            FilteredArrList.add(new Contact(originalValues.get(i).getName(),originalValues.get(i).getNumber()));
+                        }
+                        String num_data = originalValues.get(i).getNumber();
+                        if(num_data.startsWith(constraint.toString())){
+                            FilteredArrList.add(new Contact(originalValues.get(i).getName(),originalValues.get(i).getNumber()));
                         }
                     }
-                    // set the Filtered result to return
                     results.count = FilteredArrList.size();
                     results.values = FilteredArrList;
                 }
@@ -125,4 +108,20 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
         return filter;
     }
+
+    @Override
+    public int getCount(){
+        return displayValues.size();
+    }
+
+    @Override
+    public Object getItem(int position){
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position){
+        return position;
+    }
+
 }
