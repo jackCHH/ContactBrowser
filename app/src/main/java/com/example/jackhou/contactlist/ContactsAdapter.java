@@ -27,14 +27,10 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         inflater = LayoutInflater.from(context);
     }
 
-
-
     private class ViewHolder{
         LinearLayout llContainer;
         TextView name, number;
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){

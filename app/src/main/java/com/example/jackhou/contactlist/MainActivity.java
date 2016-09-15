@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText search;
     private ListView contacts;
     private ContactsAdapter contact_adapter;
-    final ArrayList<Contact> all_contacts = new ArrayList<Contact>();
+    private ArrayList<Contact> all_contacts = new ArrayList<Contact>();
 
 
     @Override
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         Cursor cur = getContacts(MainActivity.this);
         traverseCursor(cur);
 
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
 
     private Cursor getContacts(Context context) {
