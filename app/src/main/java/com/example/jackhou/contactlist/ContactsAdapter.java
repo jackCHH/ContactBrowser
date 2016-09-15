@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,8 +27,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     }
 
     private class ViewHolder{
-        LinearLayout llContainer;
         TextView name, number;
+
     }
 
     @Override
@@ -41,7 +40,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         if (convertView == null){
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.list_item, null);
-            holder.llContainer = (LinearLayout)convertView.findViewById(R.id.container);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.number = (TextView) convertView.findViewById(R.id.number);
             convertView.setTag(holder);
@@ -60,16 +58,15 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     public Filter getFilter(){
         Filter filter = new Filter(){
 
-            @SuppressWarnings("unchecked")
             @Override
-            protected void publishResults(CharSequence constraint,FilterResults results) {
+            protected void publishResults(CharSequence search_query,FilterResults results) {
 
                 displayValues = (ArrayList<Contact>) results.values;
                 notifyDataSetChanged();
             }
 
             @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
+            protected FilterResults performFiltering(CharSequence search_query) {
                 FilterResults results = new FilterResults();
                 ArrayList<Contact> FilteredArrList = new ArrayList<Contact>();
 
@@ -77,20 +74,21 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                     originalValues = new ArrayList<Contact>(displayValues);
                 }
 
-                if (constraint == null || constraint.length() == 0) {
+                if (search_query == null || search_query.length() == 0) {
 
                     results.count = originalValues.size();
                     results.values = originalValues;
 
                 } else {
-                    constraint = constraint.toString().toLowerCase();
+                    search_query = search_query.toString().toLowerCase();
+
                     for (int i = 0; i < originalValues.size(); i++) {
                         String data = originalValues.get(i).getName();
-                        if (data.toLowerCase().startsWith(constraint.toString())) {
+                        if (data.toLowerCase().contains(search_query.toString())) {
                             FilteredArrList.add(new Contact(originalValues.get(i).getName(),originalValues.get(i).getNumber()));
                         }
                         String num_data = originalValues.get(i).getNumber();
-                        if(num_data.startsWith(constraint.toString())){
+                        if(num_data.contains(search_query.toString())){
                             FilteredArrList.add(new Contact(originalValues.get(i).getName(),originalValues.get(i).getNumber()));
                         }
                     }
