@@ -16,16 +16,27 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+/*
+    - MVP, helps w/ testing.
+    - Background the cursor. 1. ContentLoader. 2. RxJava <- loook up
+    - Recycler view will force the view holder pattern.
+    - Reduce the extra white spaces. Include the style guide.
+    - Butterknife will clean up findVIewBYId().
+    - Keep methods small.
+
+ */
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private EditText search;
-    private ListView contacts;
-    private ContactsAdapter contact_adapter;
-    private ArrayList<Contact> all_contacts = new ArrayList<Contact>();
+    @BindView(R.id.search) EditText search;
+    @BindView(R.id.contact_list) ListView contacts; // Look up RecyclerView
+    private ContactsAdapter contact_adapter; // CamelCase
+    private ArrayList<Contact> all_contacts = new ArrayList<Contact>(); //CamelCase
 
 
     @Override
@@ -34,15 +45,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contacts = (ListView) findViewById(R.id.contact_list);
-        search = (EditText) findViewById(R.id.search);
-
+        ButterKnife.bind(this);
 
         Cursor cur = getContacts(MainActivity.this);
         traverseCursor(cur);
 
         contact_adapter = new ContactsAdapter(this, all_contacts);
         contacts.setAdapter(contact_adapter);
+
         contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    // clean up. Check for nullback for cursors.
     private Cursor getContacts(Context context) {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 
