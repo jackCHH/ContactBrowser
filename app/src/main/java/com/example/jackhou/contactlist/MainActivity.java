@@ -36,6 +36,21 @@ public class MainActivity extends AppCompatActivity {
 
         contacts = (ListView) findViewById(R.id.contact_list);
         search = (EditText) findViewById(R.id.search);
+
+
+        Cursor cur = getContacts(MainActivity.this);
+        traverseCursor(cur);
+
+        contact_adapter = new ContactsAdapter(this, all_contacts);
+        contacts.setAdapter(contact_adapter);
+        contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                startDialer(all_contacts.get(position).getNumber());
+            }
+        });
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -49,19 +64,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-            }
-        });
-
-        Cursor cur = getContacts(MainActivity.this);
-        traverseCursor(cur);
-
-        contact_adapter = new ContactsAdapter(this, all_contacts);
-        contacts.setAdapter(contact_adapter);
-        contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                startDialer(all_contacts.get(position).getNumber());
             }
         });
 
